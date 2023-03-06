@@ -1,4 +1,7 @@
-﻿import numpy as np
+﻿'''
+May contain bugs. These are just tutorial notes
+'''
+import numpy as np
 print('hello world')
 
 if (5 > 6):
