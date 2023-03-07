@@ -19,7 +19,7 @@ def display_image():
 def main2():
     rng.seed(12345)
     CUTOFF = 60
-    video = cv2.VideoCapture('\materials\example.mp4')
+    video = cv2.VideoCapture('materials\example.mp4')
     while (video.isOpened()):
         ret, frame = video.read()
         bw = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -69,5 +69,5 @@ def display_video():
             break
 
 if __name__ == '__main__':
-    display_video()
-    # main2()
+    # display_video()
+    main2()
