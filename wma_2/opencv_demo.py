@@ -3,9 +3,11 @@ import numpy as np
 import random as rng
 import math
 
-
 def main():
-    image = cv2.imread('../materials/example.jpg')
+    pass
+
+def display_image():
+    image = cv2.imread('materials\example.jpg')
     print(image.shape)
     part = image[500:800, 400:1000, 0]
     mask = part > 200
@@ -17,7 +19,7 @@ def main():
 def main2():
     rng.seed(12345)
     CUTOFF = 60
-    video = cv2.VideoCapture('../materials/example.mp4')
+    video = cv2.VideoCapture('\materials\example.mp4')
     while (video.isOpened()):
         ret, frame = video.read()
         bw = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -53,6 +55,19 @@ def main2():
         if cv2.waitKey(10) == ord('q'):
             break
 
+def display_video():
+    # VideoCapture(0) for camera
+    CUTOFF = 80
+    video = cv2.VideoCapture('materials/rgb_balls.mp4') 
+    while(video.isOpened()):
+        ret, frame = video.read()
+        bw = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        black_stuff = np.zeros_like(bw)
+        frame[bw<CUTOFF,2] = 255
+        cv2.imshow('Our video', frame)
+        if cv2.waitKey(10) == ord('q'):
+            break
 
 if __name__ == '__main__':
-    main2()
+    display_video()
+    # main2()
