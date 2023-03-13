@@ -1,5 +1,5 @@
 ﻿'''
-This is a script that will track red object on the screen.
+This is a script that will track rgb balls on the screen.
 '''
 import cv2
 import numpy as np
