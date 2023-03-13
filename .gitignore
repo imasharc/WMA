@@ -159,3 +159,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 /wma_2/object_tracker_test.py
+
+# directory containing assignment files to be returned. Solutions should be the same as in the gitted files, they were just renamed to avoid sharing my student number.
+/files_to_return
