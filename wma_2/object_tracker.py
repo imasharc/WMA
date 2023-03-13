@@ -9,15 +9,27 @@ import math
 def display_video():
     rng.seed(12345)
     CUTOFF = 60
-    video = cv2.VideoCapture("materials/rgb_balls.mp4")
+    video = cv2.VideoCapture("rgb_ball_720.mp4")
     # video = cv2.VideoCapture(0)
     
     if (video.isOpened() == False):
-        print("ERROR")
-    
+        print("SOMETHING WENT WRONG...THE PROGRAM WILL RELOAD THE VIDEO PATH")
+        video = cv2.VideoCapture("materials/rgb_ball_720.mp4")
+        print("ALL DONE")
+        print("YOUR RELATIVE PATH IS AS FOLLOWS:\nmaterials/rgb_ball_720.mp4")
+        print("\nPRESS 'q' TO CLOSE THE WINDOW")
+    if (video.isOpened() == False):
+        print("SOMETHING WENT WRONG...THE PROGRAM NEEDS YOU TO PROVIDE A RELATIVE PATH TO YOUR VIDEO\n")
+        path_input = input("Enter relative path to your video:")
+        video = cv2.VideoCapture(path_input)
+        print("ALL DONE")
+        print("YOUR RELATIVE PATH IS AS FOLLOWS:\n", path_input)
+        print("\nPRESS 'q' TO CLOSE THE WINDOW")
+        
     while (video.isOpened()):
         ret, frame = video.read()
-        if ret == True:
+
+        if ret == True:            
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             
             # define red color range
@@ -111,7 +123,7 @@ def display_video():
                     cv2.rectangle(frame, (int(boundRect[i][0]), int(boundRect[i][1])),
                                 (int(boundRect[i][0]+boundRect[i][2]), int(boundRect[i][1]+boundRect[i][3])), color, 2)
 
-            cv2.imshow('Frame', frame)
+            cv2.imshow('wma_2_rgb_balls', frame)
             # cv2.imshow('EDGES', canny_output)
 
             if cv2.waitKey(25) == ord('q'):
