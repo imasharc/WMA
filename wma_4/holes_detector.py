@@ -27,8 +27,8 @@ class GUI_MainWindow:
         path = tk.filedialog.askopenfile()
         self.video = cv2.VideoCapture(path.name)
         print(f'Path to the file is {path.name}')
-        self.root.after(33, self.update)
-        # self.update()
+        # self.root.after(33, self.update)
+        self.update()
     
     def read_frame_from_video(self):
         if self.video is None:
@@ -42,7 +42,7 @@ class GUI_MainWindow:
     def update_video_display(self, frame):
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         image = Image.fromarray(image)
-        image = image.resize((800, 600), Image.ANTIALIAS)
+        image = image.resize((800, 600), Image.Resampling.LANCZOS)
         image = ImageTk.PhotoImage(image)
 
         if self.panel_a is None:
