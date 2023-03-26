@@ -166,3 +166,5 @@ cython_debug/
 # Files too big to be gitted, although I might use git Large File Storage later
 # video entitled '[Stream Archive] OpenCV + Tkinter' can be found at https://odysee.com/@regule:9/stream001:e
 materials/OpenCV_and_Tkinter_regule_stream.mp4
+# video entitled 'Harris corner detection from scratch' can be fount at https://odysee.com/@regule:9/harris-numpy:8?r=D6qowKCqxdVu2ivcZb9mNREB3rppHhmx
+materials/harris_corner_detection_from_scratch.mp4
