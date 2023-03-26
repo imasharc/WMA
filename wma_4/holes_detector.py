@@ -19,12 +19,15 @@ class Blurr:
         self.kernel = np.ones((kernel_size, kernel_size))
         if neumann_neighbourhood:
             neighbourhood_radius = kernel_size // 2
-            center = neumann_neighbourhood + 1
+            center = neumann_neighbourhood + (kernel_size - 3) // 2
             for y in range(kernel_size):
                 for x in range(kernel_size):
                     if abs(center - x) + abs(center - y) > neighbourhood_radius:
                         self.kernel[y, x] = 0
         print(self.kernel)
+
+    def apply(self, image):
+        return cv2.filter2D(image, kernel = self.kernel, ddepth = -1) / len(self.kernel)
 
 class EdgeDetector:
 
@@ -47,11 +50,11 @@ class CircleDetector:
 #===================================================
 
 class GUI_MainWindow:
-    def __init__(self, circle_detector, refresh_rate = 33):
+    def __init__(self, blurr, refresh_rate = 33):
         self.root = tk.Tk()
 
         self.refresh_rate = refresh_rate
-        self.circle_detector = circle_detector
+        self.blurr = blurr
 
         self.video = None
         self.panel_a = None
@@ -79,7 +82,11 @@ class GUI_MainWindow:
 
         frame = cv2.resize(frame, (360, 360))
 
-        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        grey = self.blurr.apply(grey)
+
+        image = grey
+        # image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         image = Image.fromarray(image)
         image = image.resize((800, 600), Image.Resampling.LANCZOS)
         image = ImageTk.PhotoImage(image)
@@ -88,7 +95,7 @@ class GUI_MainWindow:
             self.panel_a = tk.Label(image = image)
             self.panel_a.image = image
             self.panel_a.pack(side = 'left', padx = 10, pady = 10)
-            print(circles)
+            # print(circles)
         else:
             self.panel_a.configure(image = image)
             self.panel_a.image = image
@@ -107,9 +114,9 @@ class GUI_MainWindow:
 #===================================================
 
 def main():
-    Blurr(5, True)
-    # main_window = GUI_MainWindow()
-    # main_window.run()
+    blurr = Blurr(3, True)
+    main_window = GUI_MainWindow(blurr)
+    main_window.run()
 
 if __name__ == '__main__':
     main()
