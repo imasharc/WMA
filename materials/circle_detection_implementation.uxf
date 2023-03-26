@@ -1,0 +1,79 @@
+<diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Diagram describing the implementation of circle detection from scratch</help_text><element><id>UMLClass</id><coordinates><x>81</x><y>405</y><w>90</w><h>27</h></coordinates><panel_attributes>Original Image</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>288</x><y>405</y><w>90</w><h>27</h></coordinates><panel_attributes>Scale</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>288</x><y>693</y><w>90</w><h>45</h></coordinates><panel_attributes>Transform
+--
+Trim</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>324</x><y>423</y><w>27</w><h>144</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>72</x><y>702</y><w>234</w><h>171</h></coordinates><panel_attributes>lt=.&gt;&gt;</panel_attributes><additional_attributes>240;10;10;170</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>855</y><w>144</w><h>144</h></coordinates><panel_attributes>_umletcode=
+//DrawConfig Parameters (bg: bgColor?, fg: fgColor?, lt: lineType?, lw: lineWidth?, transparency: transparencyValue?)
+var drawConfigBlue = {bg: blue}; 
+var config = { bg: blue, fg: '#8A2BE2', lt: '-', lw: 3}
+var configRedBlack = {bg: 'red', fg: 'black', lt:'=', lw: 3, transparency: 0}
+var randomConfig = {bg: '#6B8E23', fg: "#8B4513", lt: '.', lw: 3, transparency:10}
+
+drawCircle(80,80,10)
+drawCircle(80,80,20)
+drawCircle(80,80,40)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>36</x><y>918</y><w>81</w><h>27</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>63</x><y>891</y><w>27</w><h>81</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>27</x><y>882</y><w>90</w><h>90</h></coordinates><panel_attributes>bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>117</x><y>900</y><w>45</w><h>18</h></coordinates><panel_attributes>noise
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>54</x><y>972</y><w>45</w><h>18</h></coordinates><panel_attributes>noise
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>0</x><y>927</y><w>45</w><h>18</h></coordinates><panel_attributes>noise
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>99</x><y>738</y><w>81</w><h>45</h></coordinates><panel_attributes>**
+only for the processing
+bg=yellow
+style=wordwrap
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>288</x><y>855</y><w>90</w><h>45</h></coordinates><panel_attributes>Blurr
+--
+To reduce noise</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>324</x><y>729</y><w>27</w><h>144</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>UMLClass</id><coordinates><x>495</x><y>855</y><w>99</w><h>54</h></coordinates><panel_attributes>Edge detection
+--
+only show the edges
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>369</x><y>873</y><w>144</w><h>27</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;140;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>495</x><y>684</y><w>99</w><h>54</h></coordinates><panel_attributes>Detect circles
+--
+only show the edges
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>729</y><w>27</w><h>144</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>UMLClass</id><coordinates><x>288</x><y>549</y><w>90</w><h>27</h></coordinates><panel_attributes>To gray scale</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>189</x><y>369</y><w>81</w><h>45</h></coordinates><panel_attributes>**
+Img 3-channels
+bg=cyan
+style=wordwrap
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>351</x><y>468</y><w>81</w><h>45</h></coordinates><panel_attributes>**
+Img 3-channels
+bg=cyan
+style=wordwrap
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>351</x><y>603</y><w>90</w><h>54</h></coordinates><panel_attributes>*
+Img single-channel
+bg=gray
+style=wordwrap
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>324</x><y>567</y><w>27</w><h>144</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>162</x><y>414</y><w>144</w><h>27</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;140;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>351</x><y>765</y><w>90</w><h>54</h></coordinates><panel_attributes>*
+Img single-channel
+bg=gray
+style=wordwrap
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>387</x><y>891</y><w>90</w><h>54</h></coordinates><panel_attributes>*
+Img single-channel
+bg=gray
+style=wordwrap
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>567</x><y>765</y><w>90</w><h>54</h></coordinates><panel_attributes>*
+Img single-channel
+bg=gray
+style=wordwrap
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>558</x><y>603</y><w>90</w><h>54</h></coordinates><panel_attributes>^
+[N^3]
+circle vector
+bg=pink
+style=wordwrap
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>675</x><y>630</y><w>144</w><h>144</h></coordinates><panel_attributes>
+_umletcode=
+//DrawConfig Parameters (bg: bgColor?, fg: fgColor?, lt: lineType?, lw: lineWidth?, transparency: transparencyValue?)
+var drawConfigBlue = {bg: blue}; 
+var config = { bg: blue, fg: '#8A2BE2', lt: '-', lw: 3}
+var configRedBlack = {bg: 'red', fg: 'black', lt:'=', lw: 3, transparency: 0}
+var randomConfig = {bg: '#6B8E23', fg: "#8B4513", lt: '.', lw: 3, transparency:10}
+
+
+drawCircle(80,80,40)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>675</x><y>693</y><w>153</w><h>27</h></coordinates><panel_attributes>lt=-&gt;</panel_attributes><additional_attributes>10;10;150;10</additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>630</y><w>27</w><h>153</h></coordinates><panel_attributes>lt=-&gt;</panel_attributes><additional_attributes>10;150;10;10</additional_attributes></element><element><id>Text</id><coordinates><x>756</x><y>639</y><w>45</w><h>18</h></coordinates><panel_attributes>y
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>792</x><y>702</y><w>45</w><h>18</h></coordinates><panel_attributes>x
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>666</y><w>54</w><h>54</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;40;40;10</additional_attributes></element><element><id>Text</id><coordinates><x>783</x><y>666</y><w>45</w><h>18</h></coordinates><panel_attributes>r
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>720</x><y>405</y><w>99</w><h>27</h></coordinates><panel_attributes>Display
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>423</y><w>27</w><h>279</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;290</additional_attributes></element><element><id>Relation</id><coordinates><x>369</x><y>414</y><w>153</w><h>27</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;150;10</additional_attributes></element><element><id>Relation</id><coordinates><x>594</x><y>414</y><w>144</w><h>27</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;140;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>396</x><y>369</y><w>81</w><h>45</h></coordinates><panel_attributes>**
+Img 3-channels
+bg=cyan
+style=wordwrap
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>621</x><y>369</y><w>81</w><h>45</h></coordinates><panel_attributes>**
+Img 3-channels
+bg=cyan
+style=wordwrap
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>504</x><y>405</y><w>99</w><h>27</h></coordinates><panel_attributes>Visualisation
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>558</y><w>198</w><h>27</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;200;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>720</x><y>549</y><w>99</w><h>27</h></coordinates><panel_attributes>Calculate score
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>765</x><y>423</y><w>27</w><h>144</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element></diagram>
