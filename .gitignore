@@ -162,3 +162,7 @@ cython_debug/
 
 # directory containing assignment files to be returned. Solutions should be the same as in the gitted files, they were just renamed to avoid sharing my student number.
 /files_to_return
+
+# Files too big to be gitted, although I might use git Large File Storage later
+# video entitled '[Stream Archive] OpenCV + Tkinter' can be found at https://odysee.com/@regule:9/stream001:e
+materials/OpenCV_and_Tkinter_regule_stream.mp4
