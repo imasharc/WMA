@@ -14,8 +14,10 @@ from PIL import ImageTk
 #===================================================
 
 class GUI_MainWindow:
-    def __init__(self):
+    def __init__(self, refresh_rate = 33):
         self.root = tk.Tk()
+
+        self.refresh_rate = refresh_rate
 
         self.video = None
         self.panel_a = None
@@ -57,6 +59,7 @@ class GUI_MainWindow:
         frame = self.read_frame_from_video()
         if frame is not None:
             self.update_video_display(frame)
+        self.root.after(self.refresh_rate, self.update)
 
     def run(self):
         self.root.mainloop()
