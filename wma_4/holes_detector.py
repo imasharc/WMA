@@ -1,4 +1,14 @@
 #===================================================
+#                     DESCRIPTION
+#===================================================
+
+# THE PROGRAM IS NOT FINISHED
+# RIGHT NOW, IT APPLIES BLUR TO THE IMAGE/VIDEO
+# ACCORDING TO THE IMPLEMENTATION DIAGRAM IT IS ON THE STAGE 4 OF THE DEVELOPMENT
+# https://github.com/antonimalinowski/WMA/blob/main/materials/circle_detection_implementation.png
+# https://raw.githubusercontent.com/antonimalinowski/WMA/main/materials/circle_detection_implementation.png
+
+#===================================================
 #                       IMPORTS
 #===================================================
 
