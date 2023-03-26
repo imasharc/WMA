@@ -15,8 +15,18 @@ from PIL import ImageTk
 
 class Blurr:
 
-    def __init__(self, kernel_size, neumann_neighbourhood = False):
+    def __init__(self, kernel_size, neumann_neighbourhood = False, weighted_blur = 0.0):
         self.kernel = np.ones((kernel_size, kernel_size))
+
+        if weighted_blur != 0.0:
+            neighbourhood_radius = kernel_size // 2
+            center = neumann_neighbourhood + (kernel_size - 3) // 2
+            for y in range(kernel_size):
+                for x in range(kernel_size):
+                    if x == center and y == center:
+                        continue
+                    self.kernel[y, x] = weighted_blur / (abs(center - x) + abs(center - y))
+
         if neumann_neighbourhood:
             neighbourhood_radius = kernel_size // 2
             center = neumann_neighbourhood + (kernel_size - 3) // 2
@@ -114,7 +124,7 @@ class GUI_MainWindow:
 #===================================================
 
 def main():
-    blurr = Blurr(3, True)
+    blurr = Blurr(3, True, 0.1)
     main_window = GUI_MainWindow(blurr)
     main_window.run()
 
