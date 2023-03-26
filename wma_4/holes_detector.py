@@ -13,22 +13,34 @@ from PIL import ImageTk
 #                   CIRCLE DETECTION
 #===================================================
 
+class Blurr:
+
+    def __init__(self, kernel_size, neumann_neighbourhood = False):
+        self.kernel = np.ones((kernel_size, kernel_size))
+        if neumann_neighbourhood:
+            neighbourhood_radius = kernel_size // 2
+            center = neumann_neighbourhood + 1
+            for y in range(kernel_size):
+                for x in range(kernel_size):
+                    if abs(center - x) + abs(center - y) > neighbourhood_radius:
+                        self.kernel[y, x] = 0
+        print(self.kernel)
+
+class EdgeDetector:
+
+    def __init__(self):
+        pass
+
 class CircleDetector:
 
-    def __init__(self, gradient_variant, dp, min_distance, param_1 = 60, param_2 = 40, min_radius = 0, max_radius = 0):
-        self.gradient_variant = gradient_variant
-        self.dp = dp
-        self.min_distance = min_distance
-        self.param_1 = param_1
-        self.param_2 = param_2
+    def __init__(self, min_distance_between_centers, accumulator_threshold, min_radius = 0, max_radius = 0):
+        self.min_distance_between_centers = min_distance_between_centers
+        self.accumulator_threshold = accumulator_threshold
         self.min_radius = min_radius
-        self. max_radius = max_radius
+        self.max_radius = max_radius
 
     def detect(self, image):
-        circles = cv2.HoughCircles(image, self.gradient_variant, self.dp, self.min_distance,
-                                param1 = self.param_1, param2 = self.param_2,
-                                minRadius = self.min_radius, maxRadius = self.max_radius)
-        return np.uint16(np.around(circles))
+        pass
 
 #===================================================
 #                         GUI
@@ -66,11 +78,6 @@ class GUI_MainWindow:
     def update_video_display(self, frame):
 
         frame = cv2.resize(frame, (360, 360))
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        circles = self.circle_detector.detect(gray)
-        for i in circles[0,:]:
-            cv2.circle(frame, (i[0], i[1]), i[2], (0, 255, 0), 2)
-            cv2.circle(frame, (i[0], i[1]), 2, (0, 0, 255), 3)
 
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         image = Image.fromarray(image)
@@ -100,9 +107,9 @@ class GUI_MainWindow:
 #===================================================
 
 def main():
-    circle_detector = CircleDetector(cv2.HOUGH_GRADIENT, 1, 20, param_1 = 20, param_2 = 80)
-    main_window = GUI_MainWindow(circle_detector)
-    main_window.run()
+    Blurr(5, True)
+    # main_window = GUI_MainWindow()
+    # main_window.run()
 
 if __name__ == '__main__':
     main()
