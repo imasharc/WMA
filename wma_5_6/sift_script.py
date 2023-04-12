@@ -24,8 +24,17 @@ SOURCE_IMAGE_PATH = 'materials\lab_5_6\source.png'
 #===================================================
 
 def main():
+
+    sift = cv.SIFT_create()
+
     source_image = cv.imread(SOURCE_IMAGE_PATH)
+    gray_source = cv.cvtColor(source_image, cv.COLOR_BGR2GRAY)
     cv.imshow('Source', source_image)
+    
+    source_keypoints, source_descriptors = sift.detectAndCompute(gray_source, None)
+    marked_source = cv.drawKeypoints(source_image, source_keypoints, None)
+    cv.imshow('Key points', marked_source)
+    print(source_descriptors[0])
     cv.waitKey(0)
 
 if __name__ == '__main__':
