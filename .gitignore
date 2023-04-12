@@ -167,11 +167,17 @@ cython_debug/
 #               FILES TO BIG TO BE GITTED
 #===================================================
 
+# video entitled '[PL] Filtrowanie kolorów w opencv' can be fount at https://odysee.com/@regule:9/opencv-kolory:e
+/materials/lab_1_2/filtrowanie_kolorow_w_opencv.mp4
+
 # video entitled '[Stream Archive] OpenCV + Tkinter' can be found at https://odysee.com/@regule:9/stream001:e
-materials/OpenCV_and_Tkinter_regule_stream.mp4
+/materials/lab_3_4/OpenCV_and_Tkinter_regule_stream.mp4
 
 # video entitled 'Harris corner detection from scratch' can be fount at https://odysee.com/@regule:9/harris-numpy:8?r=D6qowKCqxdVu2ivcZb9mNREB3rppHhmx
-materials/harris_corner_detection_from_scratch.mp4
+/materials/lab_3_4/harris_corner_detection_from_scratch.mp4
 
 # video entitled 'Coffee Morning 2 ☕ | SpongeBob in real life' can be fount at https://youtu.be/phW2YepxK2k
-materials/spongebob.mp4
+/materials/lab_3_4/spongebob.mp4
+
+# video available only through academy's MS Teams
+/materials/lab_5_6/sift_explained.mp4
