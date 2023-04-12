@@ -2,8 +2,8 @@ import cv2 as cv
 import numpy as np
 from sklearn.cluster import AffinityPropagation
 
-SOURCE_IMAGE_PATH = '..\\materials\\lab_3_4\\robot_sharc.png'
-TARGET_IMAGE_PATH = '/materials/lab_3_4/robot_sharc.png'
+SOURCE_IMAGE_PATH = 'materials\lab_5_6\source.png'
+TARGET_IMAGE_PATH = 'materials\lab_5_6\source.png'
 FLANN_INDEX_KDTREE = 1
 FLANN_TREES = 5
 FLANN_CHECKS = 50
