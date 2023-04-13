@@ -39,14 +39,14 @@ def main():
     
     source_keypoints, source_descriptors = sift.detectAndCompute(gray_source, None)
     marked_source = cv.drawKeypoints(source_image, source_keypoints, None)
-    cv.imshow('Source', marked_source)
+    # cv.imshow('Source', marked_source)
 
     target_image = cv.imread(TARGET_IMAGE_PATH)
     gray_target = cv.cvtColor(target_image, cv.COLOR_BGR2GRAY)
     
     target_keypoints, target_descriptors = sift.detectAndCompute(gray_target, None)
     marked_target = cv.drawKeypoints(target_image, target_keypoints, None)
-    cv.imshow('Target', marked_target)
+    # cv.imshow('Target', marked_target)
 
     index_params = {'algorithm': FLANN_INDEX_KDTREE, 'trees': FLANN_TREES}
     search_params = {'checks': FLANN_CHECKS}
@@ -60,8 +60,8 @@ def main():
         if m.distance < KEYPOINT_VALIDITY_THRESHOLD * n.distance:
             # matches_mask[i] = [1, 0]
             matches_mask.append([m])
-            # valid_matches.append(target_keypoints[i])
-    # valid_matches = np.asarray(valid_matches, dtype = np.int32)
+            valid_matches.append(target_keypoints[matches[i][0].trainIdx].pt)
+    valid_matches = np.asarray(valid_matches, dtype = np.int32)
 
     draw_parameters = {'matchColor': (0, 0, 255), 'singlePointColor': (255, 0, 0),
                        'matchesMask': matches_mask, 'flags': cv.DrawMatchesFlags_DEFAULT}
@@ -69,7 +69,12 @@ def main():
                                               target_image, target_keypoints,
                                               matches_mask, None,
                                               flags = cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-    cv.imshow('Matches', matches_visualisation)
+    # cv.imshow('Matches', matches_visualisation)
+
+    detected_visualisation = target_image.copy()
+    for point in valid_matches:
+        cv.circle(detected_visualisation, tuple(point), 5, [0, 0, 255])
+    cv.imshow('Detected', detected_visualisation)
     
     print(source_descriptors[0])
     cv.waitKey(0)
