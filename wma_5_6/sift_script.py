@@ -13,6 +13,7 @@
 
 import cv2 as cv
 import numpy as np
+from sklearn.cluster import AffinityPropagation
 
 #===================================================
 #                       PARAMETERS
@@ -25,6 +26,7 @@ FLANN_TREES = 5
 FLANN_CHECKS = 50
 FLANN_K = 2
 KEYPOINT_VALIDITY_THRESHOLD = 0.7
+AFFIINITY_DAMPING = 0.9
 
 #===================================================
 #                   MAIN FUNCTION
@@ -74,6 +76,17 @@ def main():
     detected_visualisation = target_image.copy()
     for point in valid_matches:
         cv.circle(detected_visualisation, tuple(point), 5, [0, 0, 255])
+    
+    af = AffinityPropagation(damping = AFFIINITY_DAMPING).fit(valid_matches)
+    cluster_center_indices = af.cluster_centers_indices_
+    labels = af.labels_
+    cluster_count = len(cluster_center_indices)
+    for cluster in range(cluster_count):
+        cluster_points = valid_matches[labels == cluster]
+        x_min, y_min = np.min(cluster_points, axis = 0)
+        x_max, y_max = np.max(cluster_points, axis = 0)
+        cv.rectangle(detected_visualisation, (x_min, y_min), (x_max, y_max), (255, 0, 0), 3)
+
     cv.imshow('Detected', detected_visualisation)
     
     print(source_descriptors[0])
