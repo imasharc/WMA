@@ -28,7 +28,7 @@ FLANN_INDEX_KDTREE = 1
 FLANN_TREES = 5
 FLANN_CHECKS = 50
 FLANN_K = 2
-KEYPOINT_VALIDITY_THRESHOLD = 0.675
+KEYPOINT_VALIDITY_THRESHOLD = 0.85
 AFFIINITY_DAMPING = 0.9
 
 #===================================================
@@ -46,7 +46,7 @@ def sift(source_image_path, target_image_path):
     # cv.imshow('Source', marked_source)
 
     target_image = cv.imread(target_image_path)
-    target_image = cv.resize(target_image, dsize=(600, 600))
+    # target_image = cv.resize(target_image, dsize=(600, 600))
     gray_target = cv.cvtColor(target_image, cv.COLOR_BGR2GRAY)
     
     target_keypoints, target_descriptors = sift.detectAndCompute(gray_target, None)
@@ -67,6 +67,7 @@ def sift(source_image_path, target_image_path):
             matches_mask.append([m])
             valid_matches.append(target_keypoints[matches[i][0].trainIdx].pt)
     valid_matches = np.asarray(valid_matches, dtype = np.int32)
+    print(valid_matches)
 
     draw_parameters = {'matchColor': (0, 0, 255), 'singlePointColor': (255, 0, 0),
                        'matchesMask': matches_mask, 'flags': cv.DrawMatchesFlags_DEFAULT}
@@ -74,6 +75,7 @@ def sift(source_image_path, target_image_path):
                                               target_image, target_keypoints,
                                               matches_mask, None,
                                               flags = cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    # matches_visualisation = cv.resize(matches_visualisation, dsize=(600, 600))
     # cv.imshow('Matches', matches_visualisation)
 
     detected_visualisation = target_image.copy()
@@ -92,7 +94,7 @@ def sift(source_image_path, target_image_path):
 
     cv.imshow('Detected', detected_visualisation)
     
-    print(source_descriptors[0])
+    # print(source_descriptors[0])
     cv.waitKey(0)
 
 #===================================================
