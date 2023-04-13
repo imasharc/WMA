@@ -20,12 +20,12 @@ from sklearn.cluster import AffinityPropagation
 #===================================================
 
 SOURCE_IMAGE_PATH = 'materials\lab_5_6\source.png'
-TARGET_IMAGE_PATH = 'materials\lab_5_6\simple.png'
+TARGET_IMAGE_PATH = 'materials\lab_5_6\challenge.png'
 FLANN_INDEX_KDTREE = 1
 FLANN_TREES = 5
 FLANN_CHECKS = 50
 FLANN_K = 2
-KEYPOINT_VALIDITY_THRESHOLD = 0.7
+KEYPOINT_VALIDITY_THRESHOLD = 0.675
 AFFIINITY_DAMPING = 0.9
 
 #===================================================
