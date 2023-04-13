@@ -7,6 +7,9 @@
 # (Scale Invariant Feature Transform)
 # above info source: https://www.analyticsvidhya.com/blog/2019/10/detailed-guide-powerful-sift-technique-image-matching-python/
 
+# The script takes the source file and matches its keypoints
+# onto the target file to detect the object from the target file.
+
 #===================================================
 #                       IMPORTS
 #===================================================
@@ -19,8 +22,8 @@ from sklearn.cluster import AffinityPropagation
 #                       PARAMETERS
 #===================================================
 
-SOURCE_IMAGE_PATH = 'materials\lab_5_6\source.png'
-TARGET_IMAGE_PATH = 'materials\lab_5_6\challenge.png'
+# SOURCE_IMAGE_PATH = 'materials\lab_5_6\source.png'
+# TARGET_IMAGE_PATH = 'materials\lab_5_6\challenge.png'
 FLANN_INDEX_KDTREE = 1
 FLANN_TREES = 5
 FLANN_CHECKS = 50
@@ -29,21 +32,20 @@ KEYPOINT_VALIDITY_THRESHOLD = 0.675
 AFFIINITY_DAMPING = 0.9
 
 #===================================================
-#                   MAIN FUNCTION
+#                 SIFT ALGORITHM
 #===================================================
 
-def main():
-
+def sift(source_image_path, target_image_path):
     sift = cv.SIFT_create()
 
-    source_image = cv.imread(SOURCE_IMAGE_PATH)
+    source_image = cv.imread(source_image_path)
     gray_source = cv.cvtColor(source_image, cv.COLOR_BGR2GRAY)
     
     source_keypoints, source_descriptors = sift.detectAndCompute(gray_source, None)
     marked_source = cv.drawKeypoints(source_image, source_keypoints, None)
     # cv.imshow('Source', marked_source)
 
-    target_image = cv.imread(TARGET_IMAGE_PATH)
+    target_image = cv.imread(target_image_path)
     gray_target = cv.cvtColor(target_image, cv.COLOR_BGR2GRAY)
     
     target_keypoints, target_descriptors = sift.detectAndCompute(gray_target, None)
@@ -92,5 +94,13 @@ def main():
     print(source_descriptors[0])
     cv.waitKey(0)
 
+#===================================================
+#                   MAIN FUNCTION
+#===================================================
+
+def main():
+    sift('materials\lab_5_6\source.png', 'materials\lab_5_6\challenge.png')
+
 if __name__ == '__main__':
+    # sift(SOURCE_IMAGE_PATH, TARGET_IMAGE_PATH)
     main()
