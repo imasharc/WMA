@@ -17,8 +17,8 @@ import sift_script
 #                   MAIN FUNCTION
 #===================================================
 
-def main(source_image_path, target_image_path):
-    sift_script.sift(source_image_path, target_image_path)
+def main():
+    sift_script.sift('materials\lab_5_6\saw1.jpg', 'materials\lab_5_6\saw2.jpg')
 
 if __name__ == '__main__':
-    main('materials\lab_5_6\source.png', 'materials\lab_5_6\simple.png')
+    main()

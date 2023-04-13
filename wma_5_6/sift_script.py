@@ -32,7 +32,7 @@ KEYPOINT_VALIDITY_THRESHOLD = 0.675
 AFFIINITY_DAMPING = 0.9
 
 #===================================================
-#                 SIFT ALGORITHM
+#                   SIFT ALGORITHM
 #===================================================
 
 def sift(source_image_path, target_image_path):
@@ -46,6 +46,7 @@ def sift(source_image_path, target_image_path):
     # cv.imshow('Source', marked_source)
 
     target_image = cv.imread(target_image_path)
+    target_image = cv.resize(target_image, dsize=(600, 600))
     gray_target = cv.cvtColor(target_image, cv.COLOR_BGR2GRAY)
     
     target_keypoints, target_descriptors = sift.detectAndCompute(gray_target, None)
