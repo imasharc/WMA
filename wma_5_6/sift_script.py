@@ -75,8 +75,8 @@ def sift(source_image_path, target_image_path):
                                               target_image, target_keypoints,
                                               matches_mask, None,
                                               flags = cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-    # matches_visualisation = cv.resize(matches_visualisation, dsize=(600, 600))
-    # cv.imshow('Matches', matches_visualisation)
+    matches_visualisation = cv.resize(matches_visualisation, dsize=(600, 600))
+    cv.imshow('Matches', matches_visualisation)
 
     detected_visualisation = target_image.copy()
     for point in valid_matches:
