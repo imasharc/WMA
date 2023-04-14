@@ -20,7 +20,8 @@ from sklearn.cluster import AffinityPropagation
 #===================================================
 
 SOURCE_IMAGE_PATH = 'materials\lab_5_6\saw1.jpg'
-TARGET_IMAGE_PATH = 'materials\lab_5_6\saw2.jpg'
+SOURCE_IMAGE_PATH_2 = 'materials\lab_5_6\saw2.jpg'
+TARGET_IMAGE_PATH = 'materials\lab_5_6\saw3.jpg'
 TARGET_VIDEO_PATH = 'materials\lab_5_6\sawmovie.mp4'
 FLANN_INDEX_KDTREE = 1
 FLANN_TREES = 5
@@ -65,16 +66,30 @@ def show_video(video_path):
     # Closes all the frames
     cv.destroyAllWindows()
 
-def sift(source_image_path, target_image_path):
+def sift(source_image_path, source_image_path_2, target_image_path):
     sift = cv.SIFT_create()
 
     source_image = cv.imread(source_image_path)
     source_image = cv.resize(source_image, dsize=(600, 600))
     gray_source = cv.cvtColor(source_image, cv.COLOR_BGR2GRAY)
+
+    source_image_2 = cv.imread(source_image_path_2)
+    source_image_2 = cv.resize(source_image_2, dsize=(600, 600))
+    gray_source_2 = cv.cvtColor(source_image_2, cv.COLOR_BGR2GRAY)
     
     source_keypoints, source_descriptors = sift.detectAndCompute(gray_source, None)
     marked_source = cv.drawKeypoints(source_image, source_keypoints, None)
-    # cv.imshow('Source', marked_source)
+    cv.imshow('Source_1', marked_source)
+
+    source_keypoints_2, source_descriptors_2 = sift.detectAndCompute(gray_source_2, None)
+    marked_source_2 = cv.drawKeypoints(source_image_2, source_keypoints_2, None)
+    cv.imshow('Source_2', marked_source_2)
+
+    sources_keypoints = np.concatenate((source_keypoints, source_keypoints_2))
+    sources_descriptors = np.concatenate((source_descriptors, source_descriptors_2))
+    marked_sources = cv.drawKeypoints(source_image_2, sources_keypoints, None)
+    print(sources_descriptors)
+    cv.imshow('Sources', marked_sources)
 
     target_image = cv.imread(target_image_path)
     target_image = cv.resize(target_image, dsize=(600, 600))
@@ -88,8 +103,8 @@ def sift(source_image_path, target_image_path):
     search_params = {'checks': FLANN_CHECKS}
     flann = cv.FlannBasedMatcher(index_params, search_params)
     matches = flann.knnMatch(source_descriptors, target_descriptors, k = FLANN_K)
-    print(source_descriptors)
-    print(matches)
+    # print(source_descriptors)
+    # print(matches)
 
     # matches_mask = [[0, 0] for i in range(len(matches))]
     matches_mask = []
@@ -109,7 +124,7 @@ def sift(source_image_path, target_image_path):
                                               matches_mask, None,
                                               flags = cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
     matches_visualisation = cv.resize(matches_visualisation, dsize=(600, 600))
-    cv.imshow('Matches', matches_visualisation)
+    # cv.imshow('Matches', matches_visualisation)
 
     detected_visualisation = target_image.copy()
     for point in valid_matches:
@@ -135,7 +150,7 @@ def sift(source_image_path, target_image_path):
 #===================================================
 
 def main():
-    sift(SOURCE_IMAGE_PATH, TARGET_IMAGE_PATH)
+    sift(SOURCE_IMAGE_PATH, SOURCE_IMAGE_PATH_2, TARGET_IMAGE_PATH)
     # show_video(TARGET_VIDEO_PATH)
 
 if __name__ == '__main__':
