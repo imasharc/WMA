@@ -48,15 +48,15 @@ def sift():
     source_image = cv2.imread(SOURCE_IMAGE_PATH)
     source_image = cv2.resize(source_image, dsize=(600, 600))
     gray_source = cv2.cvtColor(source_image, cv2.COLOR_BGR2GRAY)
+
+    source_keypoints, source_descriptors = sift.detectAndCompute(gray_source, None)
+    marked_target = cv2.drawKeypoints(source_image, source_keypoints, None)
+    cv2.imshow('Target', marked_target)
     
     source_image_2 = cv2.imread(SOURCE_IMAGE_PATH_2)
     source_image_2 = cv2.resize(source_image, dsize=(600, 600))
     gray_source_2 = cv2.cvtColor(source_image_2, cv2.COLOR_BGR2GRAY)
     
-    source_keypoints, source_descriptors = sift.detectAndCompute(gray_source_2, None)
-    marked_target = cv2.drawKeypoints(source_image_2, source_keypoints, None)
-    cv2.imshow('Target', marked_target)
-
     cv2.waitKey()
 
 #===================================================
