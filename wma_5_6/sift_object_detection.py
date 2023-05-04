@@ -30,7 +30,7 @@ FLANN_TREES = 5
 FLANN_CHECKS = 50
 FLANN_K = 2
 KEYPOINT_VALIDITY_THRESHOLD = 0.68
-AFFIINITY_DAMPING = 0.75
+AFFIINITY_DAMPING = 0.94
 
 #===================================================
 #                   SIFT ALGORITHM
