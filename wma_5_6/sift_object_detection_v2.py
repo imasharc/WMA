@@ -60,6 +60,29 @@ def sift():
     source_keypoints_2, source_descriptors_2 = sift.detectAndCompute(gray_source_2, None)
     marked_target_2 = cv2.drawKeypoints(source_image_2, source_keypoints_2, None)
     cv2.imshow('Target_2', marked_target_2)
+
+    index_params = {'algorithm': FLANN_INDEX_KDTREE, 'trees': FLANN_TREES}
+    search_params = {'checks': FLANN_CHECKS}
+    flann = cv2.FlannBasedMatcher(index_params, search_params)
+    matches = flann.knnMatch(source_descriptors, source_descriptors_2, k=FLANN_K)
+
+    print(matches)
+
+    matches_mask = []
+    valid_matches = []
+    for i, (m,n) in enumerate(matches):
+        if m.distance < KEYPOINT_VALIDITY_THRESHOLD*n.distance:
+            matches_mask.append([m])
+            valid_matches.append(source_keypoints_2[matches[i][0].trainIdx].pt)
+    valid_matches = np.asarray(valid_matches, dtype=np.int32)
+
+    draw_parameters = {'matchColor': (0,0,255), 'singlePointColor': (255,0,0),
+                       'matchesMask': matches_mask, 'flags':cv2.DrawMatchesFlags_DEFAULT}
+    matches_visualisation = cv2.drawMatchesKnn(source_image, source_keypoints,
+                                              source_image_2, source_keypoints_2, 
+                                              matches_mask, None, 
+                                              flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    cv2.imshow('Matches', matches_visualisation)
     
     cv2.waitKey()
 
