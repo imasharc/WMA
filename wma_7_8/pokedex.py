@@ -23,8 +23,8 @@ import os               # provides operating system specific functions
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('-d', '--description_file', default='pokemon/pokemon.csv', help='A CSV file with pokemon informations')
-    parser.add_argument('-i', '--image_folder', default='pokemon/images', help='Folder with pokemon images')
+    parser.add_argument('-d', '--description_file', default='pokemon\pokemon.csv', help='A CSV file with pokemon informations')
+    parser.add_argument('-i', '--image_folder', default='pokemon\images', help='Folder with pokemon images')
     return parser.parse_args()
 
 #===================================================
@@ -45,6 +45,21 @@ def show_example_images(image_folder):
     plt.show()
 
 #===================================================
+#                   LOAD POKEDEX
+#===================================================
+
+def load_pokedex(description_file, image_folder):
+    pokedex = pd.read_csv(description_file)
+    pokedex.drop('Type2', axis=1, inplace=True)
+    pokedex.sort_values(by=['Name'], ascending=True, inplace=True)
+
+    images = sorted(os.listdir(image_folder))
+    images = list(map(lambda image_file: os.path.join(image_folder, image_file), images))
+    pokedex['Image'] = images
+    
+    return pokedex
+
+#===================================================
 #                   MAIN FUNCTION
 #===================================================
 
@@ -54,9 +69,7 @@ def show_dataset_info(pokedex):
 
 def main():
     args = parse_arguments()
-    pokedex = pd.read_csv(args.description_file)
-    pokedex.drop('Type2', axis=1, inplace=True)
-    pokedex.sort_values(by=['Name'], ascending=True, inplace=True)
+    pokedex = load_pokedex(args.description_file, args.image_folder)
     show_dataset_info(pokedex)
     show_example_images(args.image_folder)
 
