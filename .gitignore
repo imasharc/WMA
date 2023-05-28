@@ -181,3 +181,9 @@ cython_debug/
 
 # video available only through academy's MS Teams
 /materials/lab_5_6/sift_explained.mp4
+
+# pokemons dataset from wma classes materials for CNN training
+/wma_7_8/pokemons
+
+# pokemon dataset from kaggle (https://www.kaggle.com/datasets/vishalsubbiah/pokemon-images-and-types for CNN training
+/wma_7_8/pokemon
