@@ -32,15 +32,16 @@ def parse_arguments():
 #===================================================
 
 def show_example_images(image_folder):
-    images = os.listdir(image_folder)
-    fig, axes = plt.subplots(2, 4)
-    axes = axes.flatten()
+    images = sorted(os.listdir(image_folder))
+    fig, axis = plt.subplots(2, 4)
+    axis = axis.flatten()
     for idx, img_file in enumerate(images):
-        if idx >= len(axes):
+        if idx >= len(axis):
             break
         img = mimg.imread(os.path.join(image_folder, img_file))
-        axes[idx].imshow(img)
-        axes[idx].set_title(img_file.split('.')[0])
+        axis[idx].imshow(img)
+        axis[idx].set_title(img_file.split('.')[0])
+        axis[idx].axis('off')
     plt.show()
 
 #===================================================
