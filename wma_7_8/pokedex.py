@@ -17,6 +17,7 @@ import matplotlib.image as mimg
 import argparse
 import os               # provides operating system specific functions
 from keras.preprocessing.image import ImageDataGenerator
+import keras as ks
 
 #===================================================
 #                   ARGUMENT PARSER
@@ -89,9 +90,27 @@ def show_dataset_info(pokedex):
 def main():
     args = parse_arguments()
     pokedex = load_pokedex(args.description_file, args.image_folder)
-    show_dataset_info(pokedex)
-    show_example_images(args.image_folder)
+    # show_dataset_info(pokedex)
+    # show_example_images(args.image_folder)
     generator = prepare_data_for_network(pokedex)
+
+    # KERAS ALLOWS TO CREATE NEURAL NETWORKS IN A SIMPLE WAY
+    model = ks.models.Sequential()              # feed-forward model
+    
+    model.add(ks.layers.Conv2D(34, (3, 3), activation='relu', input_shape=(120, 120, 4)))
+    model.add(ks.layers.MaxPooling2D(2, 2))
+
+    model.add(ks.layers.Conv2D(64, (3, 3), activation='relu'))
+    model.add(ks.layers.MaxPooling2D(2, 2))
+
+    # FLATTENING THE MODEL
+    model.add(ks.layers.Flatten())
+    model.add(ks.layers.Dense(128, activation='relu'))
+    model.add(ks.layers.Dense(18, activation='softmax'))
+
+    # COMPILING THE MODEL
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['acc'])
+    print(model.summary())
 
 if __name__ == '__main__':
     main()
