@@ -18,6 +18,14 @@ import argparse
 import os               # provides operating system specific functions
 from keras.preprocessing.image import ImageDataGenerator
 import keras as ks
+## SET UP GPU WORK
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
+def fix_gpu():
+    config = ConfigProto()
+    config.gpu_options.allow_growth = True
+    session = InteractiveSession(config=config)
+fix_gpu()
 
 #===================================================
 #                   ARGUMENT PARSER
