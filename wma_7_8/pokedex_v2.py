@@ -24,7 +24,7 @@ lprint = logger.info
 wprint = logger.warning
 
 def init_logger(output_dir):
-    log_formatter = logging.Formatter('%(message)')
+    log_formatter = logging.Formatter('%(message)s')
     logfile_path = os.path.join(output_dir, 'train_pokedex_v2_convo_net.log')
     file_handler = logging.FileHandler(logfile_path)
     
@@ -43,8 +43,8 @@ def init_logger(output_dir):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('-d', '--description_file', default='pokemon\pokemon.csv', help='A CSV file with pokemon informations')
-    parser.add_argument('-i', '--image_folder', default='pokemon\images', help='Folder with pokemon images')
+    parser.add_argument('-o', '--output_path', required=True, type=str,
+                        help='Directory to which all output will be saved.')
     return parser.parse_args()
 
 #===================================================
@@ -52,7 +52,11 @@ def parse_arguments():
 #===================================================
 
 def main(args):
-    pass
+    lprint('aaa')
+    wprint('bbb')
+    init_logger(args.output_path)
+    lprint('ccc')
+    wprint('ddd')
 
 if __name__ == '__main__':
     main(parse_arguments())
