@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mimg
 import argparse
 import os               # provides operating system specific functions
+from keras.preprocessing.image import ImageDataGenerator
 
 #===================================================
 #                   ARGUMENT PARSER
@@ -56,8 +57,25 @@ def load_pokedex(description_file, image_folder):
     images = sorted(os.listdir(image_folder))
     images = list(map(lambda image_file: os.path.join(image_folder, image_file), images))
     pokedex['Image'] = images
+
+    type_encoded = pd.get_dummies(pokedex['Type1'])
+    pokedex = pd.merge(
+        left=pokedex,
+        right=type_encoded,
+        left_index=True,
+        right_index=True
+    )
+    pokedex.drop('Type1', axis=1, inplace=True)
     
     return pokedex
+
+#===================================================
+#
+#===================================================
+
+def prepare_data_for_network(pokedex):
+    data_generator = ImageDataGenerator(validation_split=0.1)
+    return data_generator
 
 #===================================================
 #                   MAIN FUNCTION
@@ -72,6 +90,7 @@ def main():
     pokedex = load_pokedex(args.description_file, args.image_folder)
     show_dataset_info(pokedex)
     show_example_images(args.image_folder)
+    prepare_data_for_network(pokedex)
 
 if __name__ == '__main__':
     main()
