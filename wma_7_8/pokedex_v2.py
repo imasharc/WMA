@@ -13,6 +13,29 @@ It was created with pokemon dataset in mind but can be used for other datasets.
 
 import argparse
 import logging
+import os
+
+#===================================================
+#                       LOGGING
+#===================================================
+
+logger = logging.getLogger()
+lprint = logger.info
+wprint = logger.warning
+
+def init_logger(output_dir):
+    log_formatter = logging.Formatter('%(message)')
+    logfile_path = os.path.join(output_dir, 'train_pokedex_v2_convo_net.log')
+    file_handler = logging.FileHandler(logfile_path)
+    
+    file_handler.setFormatter(log_formatter)
+    logger.addHandler(file_handler)
+    
+    consoler_handler = logging.StreamHandler()
+    consoler_handler.setFormatter(log_formatter)
+    logger.addHandler(consoler_handler)
+
+    logger.setLevel(logging.INFO)
 
 #===================================================
 #                   ARGUMENT PARSER
