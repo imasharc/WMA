@@ -83,7 +83,10 @@ def load_pokedex(description_file, image_folder):
 #===================================================
 
 def prepare_data_for_network(pokedex):
-    data_generator = ImageDataGenerator(validation_split=0.1, rescale=1.0/255)
+    data_generator = ImageDataGenerator(validation_split=0.1,
+                                        rescale=1.0/255, rotation_range=30,
+                                        width_shift_range=0.5, height_shift_range=0.5,
+                                        zoom_range=0.5, fill_mode='nearest')
     train_generator = data_generator.flow_from_dataframe(pokedex,
                                                          x_col='Image', y_col='Type1',
                                                          subset='training', color_mode='rgba',
@@ -152,7 +155,7 @@ def main():
 
     train_data, test_data = prepare_data_for_network(pokedex)
     model = prepare_network()
-    history = model.fit(train_data, validation_data=test_data, epochs=9)
+    history = model.fit(train_data, validation_data=test_data, epochs=30)
     history_frame = pd.DataFrame(history.history)
     history_frame.loc[:,['acc', 'val_acc']].plot()
     plt.plot(history.history['acc'])
