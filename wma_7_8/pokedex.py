@@ -71,13 +71,26 @@ def load_pokedex(description_file, image_folder):
     return pokedex
 
 #===================================================
-#               PREPARE  DATA FOR NETWORK
+#               PREPARE DATA FOR NETWORK
 #===================================================
 
 def prepare_data_for_network(pokedex):
-    data_generator = ImageDataGenerator(validation_split=0.1)
-    train_generator = data_generator.flow_from_dataframe(pokedex, x_col='Image', y_col='Type1', subset='training')
+    data_generator = ImageDataGenerator(validation_split=0.1, rescale=1.0/255)
+    train_generator = data_generator.flow_from_dataframe(pokedex, x_col='Image', y_col='Type1', subset='training', color_mode='rgba', class_mode='categorical')
     return train_generator
+
+#===================================================
+#               SHOW GENERATOR RESULTS
+#===================================================
+
+def show_generator_results(generator):
+    for i in range(10):
+        plt.subplot(2, 5, i+1)
+        for x, y in generator:
+            img = x[0]
+            plt.imshow(img)
+            break
+    plt.show()
 
 #===================================================
 #                   MAIN FUNCTION
@@ -93,11 +106,12 @@ def main():
     # show_dataset_info(pokedex)
     # show_example_images(args.image_folder)
     generator = prepare_data_for_network(pokedex)
+    show_generator_results(generator)
 
     # KERAS ALLOWS TO CREATE NEURAL NETWORKS IN A SIMPLE WAY
     model = ks.models.Sequential()              # feed-forward model
     
-    model.add(ks.layers.Conv2D(34, (3, 3), activation='relu', input_shape=(120, 120, 4)))
+    model.add(ks.layers.Conv2D(34, (3, 3), activation='relu', input_shape=(256, 256, 4)))
     model.add(ks.layers.MaxPooling2D(2, 2))
 
     model.add(ks.layers.Conv2D(64, (3, 3), activation='relu'))
@@ -109,8 +123,12 @@ def main():
     model.add(ks.layers.Dense(18, activation='softmax'))
 
     # COMPILING THE MODEL
-    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['acc'])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
     print(model.summary())
+
+    history = model.fit(generator, epochs=10)
+    plt.plot(history.history['acc'])
+    plt.show()
 
 if __name__ == '__main__':
     main()
