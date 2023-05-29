@@ -91,7 +91,7 @@ def prepare_data_for_network(pokedex):
                                                          shuffle=True)
     test_generator = data_generator.flow_from_dataframe(pokedex,
                                                          x_col='Image', y_col='Type1',
-                                                         subset='training', color_mode='rgba',
+                                                         subset='validation', color_mode='rgba',
                                                          class_mode='categorical', target_size=(120, 120),
                                                          shuffle=True)
     return train_generator, test_generator
@@ -110,25 +110,14 @@ def show_generator_results(generator):
     plt.show()
 
 #===================================================
-#                   MAIN FUNCTION
+#                   PREPARE NETWORK
 #===================================================
 
-def show_dataset_info(pokedex):
-    print(pokedex.info())
-    print(pokedex.head())
-
-def main():
-    args = parse_arguments()
-    pokedex = load_pokedex(args.description_file, args.image_folder)
-    # show_dataset_info(pokedex)
-    # show_example_images(args.image_folder)
-    generator = prepare_data_for_network(pokedex)
-    show_generator_results(generator)
-
+def prepare_network():
     # KERAS ALLOWS TO CREATE NEURAL NETWORKS IN A SIMPLE WAY
     model = ks.models.Sequential()              # feed-forward model
     
-    model.add(ks.layers.Conv2D(34, (3, 3), activation='relu', input_shape=(256, 256, 4)))
+    model.add(ks.layers.Conv2D(34, (3, 3), activation='relu', input_shape=(120, 120, 4)))
     model.add(ks.layers.MaxPooling2D(2, 2))
 
     model.add(ks.layers.Conv2D(64, (3, 3), activation='relu'))
@@ -143,7 +132,29 @@ def main():
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
     print(model.summary())
 
-    history = model.fit(generator, epochs=10)
+    return model
+
+#===================================================
+#                   MAIN FUNCTION
+#===================================================
+
+def show_dataset_info(pokedex):
+    print(pokedex.info())
+    print(pokedex.head())
+
+def main():
+    args = parse_arguments()
+    pokedex = load_pokedex(args.description_file, args.image_folder)
+    # show_dataset_info(pokedex)
+    # show_example_images(args.image_folder)
+    # generator = prepare_data_for_network(pokedex)
+    # show_generator_results(generator)
+
+    train_data, test_data = prepare_data_for_network(pokedex)
+    model = prepare_network()
+    history = model.fit(train_data, validation_data=test_data, epochs=9)
+    history_frame = pd.DataFrame(history.history)
+    history_frame.loc[:,['acc', 'val_acc']].plot()
     plt.plot(history.history['acc'])
     plt.show()
 
