@@ -58,24 +58,25 @@ def load_pokedex(description_file, image_folder):
     images = list(map(lambda image_file: os.path.join(image_folder, image_file), images))
     pokedex['Image'] = images
 
-    type_encoded = pd.get_dummies(pokedex['Type1'])
-    pokedex = pd.merge(
-        left=pokedex,
-        right=type_encoded,
-        left_index=True,
-        right_index=True
-    )
-    pokedex.drop('Type1', axis=1, inplace=True)
+    # type_encoded = pd.get_dummies(pokedex['Type1'])
+    # pokedex = pd.merge(
+    #     left=pokedex,
+    #     right=type_encoded,
+    #     left_index=True,
+    #     right_index=True
+    # )
+    # pokedex.drop('Type1', axis=1, inplace=True)
     
     return pokedex
 
 #===================================================
-#
+#               PREPARE  DATA FOR NETWORK
 #===================================================
 
 def prepare_data_for_network(pokedex):
     data_generator = ImageDataGenerator(validation_split=0.1)
-    return data_generator
+    train_generator = data_generator.flow_from_dataframe(pokedex, x_col='Image', y_col='Type1', subset='training')
+    return train_generator
 
 #===================================================
 #                   MAIN FUNCTION
@@ -90,7 +91,7 @@ def main():
     pokedex = load_pokedex(args.description_file, args.image_folder)
     show_dataset_info(pokedex)
     show_example_images(args.image_folder)
-    prepare_data_for_network(pokedex)
+    generator = prepare_data_for_network(pokedex)
 
 if __name__ == '__main__':
     main()
