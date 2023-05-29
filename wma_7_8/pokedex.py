@@ -84,8 +84,17 @@ def load_pokedex(description_file, image_folder):
 
 def prepare_data_for_network(pokedex):
     data_generator = ImageDataGenerator(validation_split=0.1, rescale=1.0/255)
-    train_generator = data_generator.flow_from_dataframe(pokedex, x_col='Image', y_col='Type1', subset='training', color_mode='rgba', class_mode='categorical')
-    return train_generator
+    train_generator = data_generator.flow_from_dataframe(pokedex,
+                                                         x_col='Image', y_col='Type1',
+                                                         subset='training', color_mode='rgba',
+                                                         class_mode='categorical', target_size=(120, 120),
+                                                         shuffle=True)
+    test_generator = data_generator.flow_from_dataframe(pokedex,
+                                                         x_col='Image', y_col='Type1',
+                                                         subset='training', color_mode='rgba',
+                                                         class_mode='categorical', target_size=(120, 120),
+                                                         shuffle=True)
+    return train_generator, test_generator
 
 #===================================================
 #               SHOW GENERATOR RESULTS
