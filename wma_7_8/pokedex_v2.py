@@ -47,9 +47,10 @@ def get_image_generators(training_dir, validation_dir, batch_size):
     # template of what steps have to be done when generating the data
     # right now, ImageDataGenerator is a default one
     data_generator = ImageDataGenerator()
-    # here, we are creating a specifi generator for specific folders
+    # here, we are creating a specific generator for specific folders
     train_generator = data_generator.flow_from_directory(training_dir, shuffle=True, batch_size=batch_size)
-    return train_generator, None
+    validation_generator = data_generator.flow_from_directory(validation_dir, shuffle=True, batch_size=batch_size)
+    return train_generator, validation_generator
 
 #===================================================
 #                   ARGUMENT PARSER
@@ -63,7 +64,7 @@ def parse_arguments():
                         help='Directory with training data')
     parser.add_argument('-v', '--validation_directory', required=True, type=str,
                         help='Directory with validation data')
-    parser.add_argument('--batch_size', default=20, type=positive_integer,
+    parser.add_argument('-b', '--batch_size', default=20, type=positive_integer,
                         help='Size of a single training batch')
     return parser.parse_args()
 
@@ -86,7 +87,7 @@ def positive_integer(txt):
 def main(args):
     init_logger(args.output_path)
     get_image_generators(args.train_directory, args.validation_directory, args.batch_size)
-    print('it works')
+    print('It works')
 
 if __name__ == '__main__':
     main(parse_arguments())
