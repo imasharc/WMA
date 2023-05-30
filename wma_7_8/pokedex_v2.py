@@ -14,9 +14,9 @@ It was created with pokemon dataset in mind but can be used for other datasets.
 import argparse
 import logging
 import os
-from keras.preprocessing.image import ImageDataGenerator
-from keras.models import Model
-from keras.layers import Input, Dense, Conv2D, MaxPooling2D, Flatten
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Dense, Conv2D, MaxPooling2D, Flatten
 
 #===================================================
 #                       GLOBALS
@@ -24,6 +24,7 @@ from keras.layers import Input, Dense, Conv2D, MaxPooling2D, Flatten
 
 INPUT_SHAPE = (100, 100)
 OUTPUT_SIZE = 150
+MAX_EPOCHS = 10
 
 #===================================================
 #                       LOGGING
@@ -97,10 +98,123 @@ networks = {'example':build_example_network}
 def build_network(network_name, input_size, output_size):
     try:
         network = networks[network_name](input_size, output_size)
-        network.compile(optimizer='adam', loss='categorical_cross_entropy', metrics=['categorical_accuracy'])
+        network.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['categorical_accuracy'])
         return network
     except KeyError:
         raise KeyError(f'No network with name {network_name}.')
+
+#===================================================
+#                 TRAINING FUNCTION
+#===================================================
+
+def train_network(network, train_generator, validation_generator, max_epochs):
+    history = network.fit_generator(train_generator, epochs=max_epochs,
+                                    verbose=1, validation_data=validation_generator)
+    return history
+
+#==================================================================================================
+#                                       VISUALISATIONS 
+#==================================================================================================
+
+def plot_history(history, output_dir, experiment_id):
+    acc = history.history['categorical_accuracy']
+    val_acc = history.history['val_categorical_accuracy']
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
+
+    epochs = range(len(acc)) # Get number of epochs
+
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.plot(epochs, acc, 'r-', label='Training')
+    plt.plot(epochs, val_acc, 'b--', label='Validation')
+    plt.title('Training and validation accuracy')
+    plt.legend()
+    plt.savefig(os.path.join(output_dir, f'{experiment_id}_accuracy.png'))
+    plt.clf()
+
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.plot(epochs, loss, 'r-', label='Training')
+    plt.plot(epochs, val_loss, 'b--', label='Validation')
+    plt.legend()
+    plt.savefig(os.path.join(output_dir, f'{experiment_id}_loss.png'))
+    plt.clf()
+
+def heatmap(data, row_labels, col_labels, ax=None, cbar_kw={}, cbarlabel="", **kwargs):
+
+    if not ax:
+        ax = plt.gca()
+
+    # Plot the heatmap
+    im = ax.imshow(data, **kwargs)
+
+    # Create colorbar
+    cbar = ax.figure.colorbar(im, ax=ax, **cbar_kw)
+    cbar.ax.set_ylabel(cbarlabel, rotation=-90, va="bottom")
+
+    # We want to show all ticks...
+    ax.set_xticks(np.arange(data.shape[1]))
+    ax.set_yticks(np.arange(data.shape[0]))
+    ax.set_xlabel("Prediction")
+    ax.set_ylabel("Label")
+    # ... and label them with the respective list entries.
+    ax.set_xticklabels(col_labels)
+    ax.set_yticklabels(row_labels)
+
+    # Let the horizontal axes labeling appear on top.
+    ax.tick_params(top=False, bottom=True, labeltop=False, labelbottom=True)
+
+    plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+
+    # Turn spines off and create white grid.
+    ax.spines[:].set_visible(False)
+
+    ax.set_xticks(np.arange(data.shape[1] + 1) - .5, minor=True)
+    ax.set_yticks(np.arange(data.shape[0] + 1) - .5, minor=True)
+    ax.grid(which="minor", color="w", linestyle='-', linewidth=3)
+    ax.tick_params(which="minor", bottom=False, left=False)
+
+    return im, cbar
+
+def annotate_heatmap(im, data=None, textcolors=("black", "white")):
+
+    if not isinstance(data, (list, np.ndarray)):
+        data = im.get_array()
+
+    threshold = im.norm(data.max()) / 2.
+
+    # Set default alignment to center
+    kw = dict(horizontalalignment="center", verticalalignment="center")
+
+    texts = []
+    for i in range(data.shape[0]):
+        for j in range(data.shape[1]):
+            kw.update(color=textcolors[int(im.norm(data[i, j]) > threshold)])
+            text = im.axes.text(j, i, data[i, j], **kw)
+            texts.append(text)
+
+    return texts
+
+def load_eng_labels(classes):
+    labels = list()
+    for label in classes:
+        labels.append(label.split('(')[0])
+
+    labels = np.array(labels, dtype=object)
+    return labels
+
+def print_confusion_matrix(y_pred, y_true, classifications, output_dir, experiment_id):
+    confusion_mtx = tf.math.confusion_matrix(y_true, y_pred, num_classes=len(classifications))
+
+    fig, ax = plt.subplots(figsize=(12, 10))
+    im, cbar = heatmap(confusion_mtx, classifications, classifications, ax=ax,
+                       cmap=plt.cm.GnBu, cbarlabel="Classification")
+    annotate_heatmap(im)
+
+    fig.tight_layout()
+    plt.savefig(os.path.join(output_dir, f'{experiment_id}_confusion.png'))
+    plt.clf()
 
 #===================================================
 #                   ARGUMENT PARSER
@@ -143,6 +257,8 @@ def main(args):
     output_size = OUTPUT_SIZE
     network = build_network(args.network_name, input_shape, output_size)
     lprint(network.summary())
+    history = train_network(network, train_generator, validation_generator, MAX_EPOCHS)
+    plot_history(history, args.output_paths, args.network_name)
 
 if __name__ == '__main__':
     main(parse_arguments())
