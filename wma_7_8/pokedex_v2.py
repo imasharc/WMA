@@ -14,6 +14,7 @@ It was created with pokemon dataset in mind but can be used for other datasets.
 import argparse
 import logging
 import os
+from keras.preprocessing.image import ImageDataGenerator
 
 #===================================================
 #                       LOGGING
@@ -38,6 +39,19 @@ def init_logger(output_dir):
     logger.setLevel(logging.INFO)
 
 #===================================================
+#                 DATA HANDLING
+#===================================================
+    
+    # batch size defines the number of images to be put at once into the model to train it
+def get_image_generators(training_dir, validation_dir, batch_size):
+    # template of what steps have to be done when generating the data
+    # right now, ImageDataGenerator is a default one
+    data_generator = ImageDataGenerator()
+    # here, we are creating a specifi generator for specific folders
+    train_generator = data_generator.flow_from_directory(training_dir, shuffle=True, batch_size=batch_size)
+    return train_generator, None
+
+#===================================================
 #                   ARGUMENT PARSER
 #===================================================
 
@@ -45,18 +59,34 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('-o', '--output_path', required=True, type=str,
                         help='Directory to which all output will be saved.')
+    parser.add_argument('-t', '--train_directory', required=True, type=str,
+                        help='Directory with training data')
+    parser.add_argument('-v', '--validation_directory', required=True, type=str,
+                        help='Directory with validation data')
+    parser.add_argument('--batch_size', default=20, type=positive_integer,
+                        help='Size of a single training batch')
     return parser.parse_args()
+
+#===================================================
+#               BATCH SIZE CONSTRAINTS
+#===================================================
+
+def positive_integer(txt):
+    try:
+        value = int(txt)
+        if value <= 0:
+            raise ValueError(f'Value {value} is not a positive integer.')
+    except ValueError as err:
+        raise ValueError(f'Unable to convert {txt} to integer.')
 
 #===================================================
 #                     MAIN FUNCTION
 #===================================================
 
 def main(args):
-    lprint('aaa')
-    wprint('bbb')
     init_logger(args.output_path)
-    lprint('ccc')
-    wprint('ddd')
+    get_image_generators(args.train_directory, args.validation_directory, args.batch_size)
+    print('it works')
 
 if __name__ == '__main__':
     main(parse_arguments())
