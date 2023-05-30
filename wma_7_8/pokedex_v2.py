@@ -23,6 +23,7 @@ from keras.preprocessing.image import ImageDataGenerator
 logger = logging.getLogger()
 lprint = logger.info
 wprint = logger.warning
+eprint = logger.error
 
 def init_logger(output_dir):
     log_formatter = logging.Formatter('%(message)s')
@@ -51,6 +52,21 @@ def get_image_generators(training_dir, validation_dir, batch_size):
     train_generator = data_generator.flow_from_directory(training_dir, shuffle=True, batch_size=batch_size)
     validation_generator = data_generator.flow_from_directory(validation_dir, shuffle=True, batch_size=batch_size)
     return train_generator, validation_generator
+
+#===================================================
+#                   NEURAL NETWORKS
+#===================================================
+
+def build_example_network():
+    pass
+
+networks = {'example':build_example_network}
+
+def build_network(network_name):
+    try:
+        network = networks[network_name]
+    except KeyError:
+        raise KeyError(f'No network with name {network_name}.')
 
 #===================================================
 #                   ARGUMENT PARSER
